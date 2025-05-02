@@ -125,7 +125,4 @@ app.delete("/concesionarios/:id/coches/:cocheId", (req, res) => {
   res.json({ message: "Coche eliminado" });
 });
 
-// Arrancar servidor
-app.listen(port, () => {
-  console.log(`Servidor desplegado en puerto: ${port}`);
-});
+
