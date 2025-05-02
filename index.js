@@ -1,8 +1,16 @@
 const express = require("express");
+const connectDB = require("./feature/database-connection/database"); // Ruta según tu estructura
 const app = express();
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
+
+// Conectar a la base de datos y arrancar el servidor
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log(`Servidor desplegado en puerto: ${port}`);
+  });
+});
 
 // Datos simulados
 let concesionarios = [
