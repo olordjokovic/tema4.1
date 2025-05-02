@@ -2,7 +2,7 @@
 
 
 const express = require("express");
-const connectDB = require("./database"); // Asegúrate de que la ruta sea correcta
+const connectDB = require("./feature/database-connection/database"); // Asegúrate de que la ruta sea correcta
 const app = express();
 app.use(express.json());
 
