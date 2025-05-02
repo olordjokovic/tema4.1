@@ -1,5 +1,8 @@
+
+
+
 const express = require("express");
-const connectDB = require("./feature/database-connection/database"); // Ruta según tu estructura
+const connectDB = require("./feature/database-connection/database"); // Asegúrate de que la ruta sea correcta
 const app = express();
 app.use(express.json());
 
@@ -10,7 +13,10 @@ connectDB().then(() => {
   app.listen(port, () => {
     console.log(`Servidor desplegado en puerto: ${port}`);
   });
+}).catch(err => {
+  console.error("Error al conectar a la base de datos:", err);
 });
+
 
 // Datos simulados
 let concesionarios = [
