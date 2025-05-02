@@ -1,8 +1,22 @@
+
+
+
 const express = require("express");
+const connectDB = require("./database"); // Asegúrate de que la ruta sea correcta
 const app = express();
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
+
+// Conectar a la base de datos y arrancar el servidor
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log(`Servidor desplegado en puerto: ${port}`);
+  });
+}).catch(err => {
+  console.error("Error al conectar a la base de datos:", err);
+});
+
 
 // Datos simulados
 let concesionarios = [
@@ -111,7 +125,4 @@ app.delete("/concesionarios/:id/coches/:cocheId", (req, res) => {
   res.json({ message: "Coche eliminado" });
 });
 
-// Arrancar servidor
-app.listen(port, () => {
-  console.log(`Servidor desplegado en puerto: ${port}`);
-});
+
