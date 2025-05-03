@@ -20,7 +20,8 @@
   "homepage": "https://github.com/olordjokovic/tema4.1#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "mongoose": "^8.14.1"
+    "mongoose": "^8.14.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",
