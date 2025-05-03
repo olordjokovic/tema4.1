@@ -3,7 +3,21 @@
 
 const express = require("express");
 const connectDB = require("./database"); // Asegúrate de que la ruta sea correcta
+
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+
+
+
+
 const app = express();
+
+// Configuración de Swagger
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+
+
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
