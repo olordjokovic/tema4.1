@@ -4,12 +4,10 @@ const app = express();
 
 app.use(express.json());
 
-
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 
 const port = process.env.PORT || 8080;
 
@@ -78,7 +76,6 @@ app.delete("/concesionarios/:id", (req, res) => {
   res.json({ message: "Concesionario eliminado" });
 });
 
-
 // =========================
 // RUTAS DE COCHES POR CONCESIONARIO
 // =========================
@@ -102,22 +99,22 @@ app.post("/concesionarios/:id/coches", (req, res) => {
 });
 
 // Obtener un coche específico de un concesionario
-app.get("/concesionarios/:id/coches/:cocheId", (req, res) => {
+app.get("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find((c) => c.id === parseInt(req.params.id));
   if (!concesionario) return res.status(404).json({ error: "Concesionario no encontrado" });
 
-  const coche = concesionario.coches.find((car) => car.id === parseInt(req.params.cocheId));
+  const coche = concesionario.coches.find((car) => car.id === parseInt(req.params.id_coche));
   if (!coche) return res.status(404).json({ error: "Coche no encontrado" });
 
   res.json(coche);
 });
 
 // Actualizar un coche específico de un concesionario
-app.put("/concesionarios/:id/coches/:cocheId", (req, res) => {
+app.put("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find((c) => c.id === parseInt(req.params.id));
   if (!concesionario) return res.status(404).json({ error: "Concesionario no encontrado" });
 
-  const cocheIndex = concesionario.coches.findIndex((car) => car.id === parseInt(req.params.cocheId));
+  const cocheIndex = concesionario.coches.findIndex((car) => car.id === parseInt(req.params.id_coche));
   if (cocheIndex === -1) return res.status(404).json({ error: "Coche no encontrado" });
 
   concesionario.coches[cocheIndex] = {
@@ -128,13 +125,14 @@ app.put("/concesionarios/:id/coches/:cocheId", (req, res) => {
 });
 
 // Eliminar un coche específico de un concesionario
-app.delete("/concesionarios/:id/coches/:cocheId", (req, res) => {
+app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find((c) => c.id === parseInt(req.params.id));
   if (!concesionario) return res.status(404).json({ error: "Concesionario no encontrado" });
 
-  concesionario.coches = concesionario.coches.filter((car) => car.id !== parseInt(req.params.cocheId));
+  concesionario.coches = concesionario.coches.filter((car) => car.id !== parseInt(req.params.id_coche));
   res.json({ message: "Coche eliminado" });
 });
+
 
 
 
