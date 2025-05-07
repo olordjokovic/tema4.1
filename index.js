@@ -133,6 +133,3 @@ app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   res.json({ message: "Coche eliminado" });
 });
 
-
-
-
