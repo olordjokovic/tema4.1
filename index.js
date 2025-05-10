@@ -22,6 +22,9 @@ connectDB()
     console.error("Error al conectar a la base de datos:", err);
   });
 
+// Rutas de concesionarios y coches (tu código existente)
+
+
 // --- Datos simulados (en memoria) ---
 let concesionarios = [
   {
