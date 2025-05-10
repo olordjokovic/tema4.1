@@ -103,6 +103,134 @@
           "200": { "description": "Concesionario eliminado" }
         }
       }
+    },
+    "/concesionarios/{id}/coches": {
+      "get": {
+        "summary": "Obtener todos los coches de un concesionario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de coches" },
+          "404": { "description": "Concesionario no encontrado" }
+        }
+      },
+      "post": {
+        "summary": "Añadir un coche a un concesionario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "modelo": { "type": "string" },
+                  "cv": { "type": "integer" },
+                  "precio": { "type": "number" }
+                },
+                "required": ["modelo", "cv", "precio"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Coche añadido" },
+          "404": { "description": "Concesionario no encontrado" }
+        }
+      }
+    },
+    "/concesionarios/{id}/coches/{id_coche}": {
+      "get": {
+        "summary": "Obtener un coche por ID en un concesionario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "id_coche",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Coche encontrado" },
+          "404": { "description": "Concesionario o coche no encontrado" }
+        }
+      },
+      "put": {
+        "summary": "Actualizar un coche por ID en un concesionario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "id_coche",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "modelo": { "type": "string" },
+                  "cv": { "type": "integer" },
+                  "precio": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Coche actualizado" },
+          "404": { "description": "Concesionario o coche no encontrado" }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un coche por ID en un concesionario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "id_coche",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Coche eliminado" },
+          "404": { "description": "Concesionario o coche no encontrado" }
+        }
+      }
     }
   }
 }
