@@ -6,6 +6,7 @@ app.use(express.json());
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
 
@@ -133,5 +134,5 @@ app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   res.json({ message: "Coche eliminado" });
 });
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 
