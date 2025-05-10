@@ -7,7 +7,7 @@ app.use(express.json());
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 
 const port = process.env.PORT || 8080;
 
@@ -132,4 +132,6 @@ app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   concesionario.coches = concesionario.coches.filter((car) => car.id !== parseInt(req.params.id_coche));
   res.json({ message: "Coche eliminado" });
 });
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
