@@ -1,10 +1,13 @@
 const express = require("express");
 const connectDB = require("./database"); // Asegúrate de que existe y conecta correctamente
 const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json"); // El archivo swagger.json debe estar en la raíz del proyecto
+const path = require("path"); // Añadir path para una ruta más segura
 
 const app = express();
 app.use(express.json());
+
+// Asegúrate de que la ruta de swagger.json esté correcta
+const swaggerDocument = require(path.join(__dirname, "swagger.json"));
 
 // Configuración de Swagger
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -39,19 +42,16 @@ let concesionarios = [
 // RUTAS DE CONCESIONARIOS
 // =========================
 
-// Obtener todos los concesionarios
 app.get("/concesionarios", (req, res) => {
   res.json(concesionarios);
 });
 
-// Crear nuevo concesionario
 app.post("/concesionarios", (req, res) => {
   const nuevo = { ...req.body, id: Date.now(), coches: [] };
   concesionarios.push(nuevo);
   res.status(201).json(nuevo);
 });
 
-// Obtener un concesionario por ID
 app.get("/concesionarios/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const concesionario = concesionarios.find((c) => c.id === id);
@@ -60,7 +60,6 @@ app.get("/concesionarios/:id", (req, res) => {
   res.json(concesionario);
 });
 
-// Actualizar un concesionario
 app.put("/concesionarios/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const index = concesionarios.findIndex((c) => c.id === id);
@@ -71,7 +70,6 @@ app.put("/concesionarios/:id", (req, res) => {
   res.json(concesionarios[index]);
 });
 
-// Eliminar un concesionario
 app.delete("/concesionarios/:id", (req, res) => {
   const id = parseInt(req.params.id);
   concesionarios = concesionarios.filter((c) => c.id !== id);
@@ -82,7 +80,6 @@ app.delete("/concesionarios/:id", (req, res) => {
 // RUTAS DE COCHES POR CONCESIONARIO
 // =========================
 
-// Obtener todos los coches de un concesionario
 app.get("/concesionarios/:id/coches", (req, res) => {
   const concesionario = concesionarios.find(
     (c) => c.id === parseInt(req.params.id)
@@ -93,7 +90,6 @@ app.get("/concesionarios/:id/coches", (req, res) => {
   res.json(concesionario.coches);
 });
 
-// Añadir un coche a un concesionario
 app.post("/concesionarios/:id/coches", (req, res) => {
   const concesionario = concesionarios.find(
     (c) => c.id === parseInt(req.params.id)
@@ -106,7 +102,6 @@ app.post("/concesionarios/:id/coches", (req, res) => {
   res.status(201).json(nuevoCoche);
 });
 
-// Obtener un coche específico de un concesionario
 app.get("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find(
     (c) => c.id === parseInt(req.params.id)
@@ -122,7 +117,6 @@ app.get("/concesionarios/:id/coches/:id_coche", (req, res) => {
   res.json(coche);
 });
 
-// Actualizar un coche específico de un concesionario
 app.put("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find(
     (c) => c.id === parseInt(req.params.id)
@@ -143,7 +137,6 @@ app.put("/concesionarios/:id/coches/:id_coche", (req, res) => {
   res.json(concesionario.coches[cocheIndex]);
 });
 
-// Eliminar un coche específico de un concesionario
 app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   const concesionario = concesionarios.find(
     (c) => c.id === parseInt(req.params.id)
