@@ -159,3 +159,121 @@ app.delete("/concesionarios/:id/coches/:id_coche", (req, res) => {
   );
   res.json({ message: "Coche eliminado" });
 });
+
+
+
+// RUTAS DE GREIDLAS
+
+let greidlas=[];
+
+
+//Obtener todas las greidlas
+
+app.get("/greidslas", (req, res) => {
+  res.json(greidslas);
+});
+
+
+// Crear nueva greidsla
+
+app.post("/greidslas", (req, res) => {
+  const nuevaGreidsla = { ...req.body, id: Date.now(), puckets: [] };
+  greidslas.push(nuevaGreidsla);
+  res.status(201).json(nuevaGreidsla);
+});
+
+
+// Obtener una greidsla por ID
+
+app.get("/greidslas/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const greidsla = greidslas.find(g => g.id === id);
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+  res.json(greidsla);
+});
+
+// Actualizar una greidsla
+app.put("/greidslas/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = greidslas.findIndex(g => g.id === id);
+  if (index === -1) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  greidslas[index] = { ...greidslas[index], ...req.body };
+  res.json(greidslas[index]);
+});
+
+
+// Eliminar una greidsla
+app.delete("/greidslas/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  greidslas = greidslas.filter(g => g.id !== id);
+  res.json({ message: "Greidsla eliminada" });
+});
+
+
+
+//Rutas de puckets dentro de greidslas
+
+
+// Obtener todos los puckets de una greidsla
+app.get("/greidslas/:id/puckets", (req, res) => {
+  const greidsla = greidslas.find(g => g.id === parseInt(req.params.id));
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  res.json(greidsla.puckets);
+});
+
+
+// Crear un nuevo pucket
+app.post("/greidslas/:id/puckets", (req, res) => {
+  const greidsla = greidslas.find(g => g.id === parseInt(req.params.id));
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  const nuevoPucket = { id: Date.now(), ...req.body };
+  greidsla.puckets.push(nuevoPucket);
+  res.status(201).json(nuevoPucket);
+});
+
+
+// Obtener un pucket específico
+app.get("/greidslas/:id/puckets/:pucketId", (req, res) => {
+  const greidsla = greidslas.find(g => g.id === parseInt(req.params.id));
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  const pucket = greidsla.puckets.find(p => p.id === parseInt(req.params.pucketId));
+  if (!pucket) return res.status(404).json({ error: "Pucket no encontrado" });
+
+  res.json(pucket);
+});
+
+// Actualizar un pucket
+app.put("/greidslas/:id/puckets/:pucketId", (req, res) => {
+  const greidsla = greidslas.find(g => g.id === parseInt(req.params.id));
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  const index = greidsla.puckets.findIndex(p => p.id === parseInt(req.params.pucketId));
+  if (index === -1) return res.status(404).json({ error: "Pucket no encontrado" });
+
+  greidsla.puckets[index] = { ...greidsla.puckets[index], ...req.body };
+  res.json(greidsla.puckets[index]);
+});
+
+// Eliminar un pucket
+app.delete("/greidslas/:id/puckets/:pucketId", (req, res) => {
+  const greidsla = greidslas.find(g => g.id === parseInt(req.params.id));
+  if (!greidsla) return res.status(404).json({ error: "Greidsla no encontrada" });
+
+  greidsla.puckets = greidsla.puckets.filter(p => p.id !== parseInt(req.params.pucketId));
+  res.json({ message: "Pucket eliminado" });
+});
+
+
+
+
+
+
+
+
+
+
+
