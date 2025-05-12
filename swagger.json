@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API de Concesionarios",
-    "version": "1.0.0",
-    "description": "API REST para gestionar concesionarios y sus coches"
+    "title": "API de Concesionarios y Greidslas",
+    "version": "1.1.0",
+    "description": "API REST para gestionar concesionarios, coches, greidslas y puckets"
   },
   "servers": [
     {
@@ -12,17 +12,16 @@
     }
   ],
   "paths": {
-    "/concesionarios": {
+    ...
+    "/greidslas": {
       "get": {
-        "summary": "Obtener todos los concesionarios",
+        "summary": "Obtener todas las greidslas",
         "responses": {
-          "200": {
-            "description": "Lista de concesionarios"
-          }
+          "200": { "description": "Lista de greidslas" }
         }
       },
       "post": {
-        "summary": "Crear un nuevo concesionario",
+        "summary": "Crear una nueva greidsla",
         "requestBody": {
           "required": true,
           "content": {
@@ -31,23 +30,22 @@
                 "type": "object",
                 "properties": {
                   "nombre": { "type": "string" },
-                  "direccion": { "type": "string" }
+                  "fecha": { "type": "string", "format": "date" },
+                  "ciudad": { "type": "string" }
                 },
-                "required": ["nombre", "direccion"]
+                "required": ["nombre", "fecha", "ciudad"]
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Concesionario creado"
-          }
+          "201": { "description": "Greidsla creada" }
         }
       }
     },
-    "/concesionarios/{id}": {
+    "/greidslas/{id}": {
       "get": {
-        "summary": "Obtener un concesionario por ID",
+        "summary": "Obtener una greidsla por ID",
         "parameters": [
           {
             "name": "id",
@@ -57,19 +55,119 @@
           }
         ],
         "responses": {
-          "200": { "description": "Concesionario encontrado" },
+          "200": { "description": "Greidsla encontrada" },
+          "404": { "description": "No encontrada" }
+        }
+      },
+      "put": {
+        "summary": "Actualizar una greidsla por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "fecha": { "type": "string", "format": "date" },
+                  "ciudad": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Greidsla actualizada" }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar una greidsla por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Greidsla eliminada" }
+        }
+      }
+    },
+    "/greidslas/{id}/puckets": {
+      "get": {
+        "summary": "Obtener todos los puckets de una greidsla",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de puckets" },
+          "404": { "description": "Greidsla no encontrada" }
+        }
+      },
+      "post": {
+        "summary": "Añadir un pucket a una greidsla",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "descripcion": { "type": "string" },
+                  "precio": { "type": "number" },
+                  "cantidad": { "type": "integer" }
+                },
+                "required": ["descripcion", "precio", "cantidad"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Pucket añadido" },
+          "404": { "description": "Greidsla no encontrada" }
+        }
+      }
+    },
+    "/greidslas/{id}/puckets/{pucketId}": {
+      "get": {
+        "summary": "Obtener un pucket específico de una greidsla",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "pucketId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Pucket encontrado" },
           "404": { "description": "No encontrado" }
         }
       },
       "put": {
-        "summary": "Actualizar un concesionario por ID",
+        "summary": "Actualizar un pucket de una greidsla",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "pucketId", "in": "path", "required": true, "schema": { "type": "integer" } }
         ],
         "requestBody": {
           "required": true,
@@ -78,159 +176,31 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "nombre": { "type": "string" },
-                  "direccion": { "type": "string" }
+                  "descripcion": { "type": "string" },
+                  "precio": { "type": "number" },
+                  "cantidad": { "type": "integer" }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Concesionario actualizado" }
+          "200": { "description": "Pucket actualizado" },
+          "404": { "description": "No encontrado" }
         }
       },
       "delete": {
-        "summary": "Eliminar un concesionario por ID",
+        "summary": "Eliminar un pucket de una greidsla",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "pucketId", "in": "path", "required": true, "schema": { "type": "integer" } }
         ],
         "responses": {
-          "200": { "description": "Concesionario eliminado" }
-        }
-      }
-    },
-    "/concesionarios/{id}/coches": {
-      "get": {
-        "summary": "Obtener todos los coches de un concesionario",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Lista de coches" },
-          "404": { "description": "Concesionario no encontrado" }
-        }
-      },
-      "post": {
-        "summary": "Añadir un coche a un concesionario",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "modelo": { "type": "string" },
-                  "cv": { "type": "integer" },
-                  "precio": { "type": "number" }
-                },
-                "required": ["modelo", "cv", "precio"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": { "description": "Coche añadido" },
-          "404": { "description": "Concesionario no encontrado" }
-        }
-      }
-    },
-    "/concesionarios/{id}/coches/{id_coche}": {
-      "get": {
-        "summary": "Obtener un coche por ID en un concesionario",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          },
-          {
-            "name": "id_coche",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Coche encontrado" },
-          "404": { "description": "Concesionario o coche no encontrado" }
-        }
-      },
-      "put": {
-        "summary": "Actualizar un coche por ID en un concesionario",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          },
-          {
-            "name": "id_coche",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "modelo": { "type": "string" },
-                  "cv": { "type": "integer" },
-                  "precio": { "type": "number" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": { "description": "Coche actualizado" },
-          "404": { "description": "Concesionario o coche no encontrado" }
-        }
-      },
-      "delete": {
-        "summary": "Eliminar un coche por ID en un concesionario",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          },
-          {
-            "name": "id_coche",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Coche eliminado" },
-          "404": { "description": "Concesionario o coche no encontrado" }
+          "200": { "description": "Pucket eliminado" },
+          "404": { "description": "No encontrado" }
         }
       }
     }
   }
 }
+
