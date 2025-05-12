@@ -2,7 +2,6 @@ const express = require("express");
 const connectDB = require("./database"); // Asegúrate de que existe y conecta correctamente
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json"); // El archivo swagger.json debe estar en la raíz del proyecto
-const Greidsla = require("./models/Greidsla");
 const app = express();
 app.use(express.json());
 
